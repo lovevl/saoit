@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,
+    width=device-width,initial-scale=1.0" />
+    <title>校园防控二维码</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #5d9564;
+            background-image: url("jin.jpg");
+            background-repeat:no-repeat;
+            background-size:100% ;
+            /*overflow: hidden;*/
+        }
+        .year{
+            margin: 55px auto;
+            width: 200px;
+            text-align: center;
+        }
+        .year span{
+            line-height: 40px;
+            font-size: 40px;
+            color: #fff;
+        }
+        #clock {
+        position: absolute;
+        left:0;
+        top:0;
+        width: 180px;
+          height: 60px;
+        font-size: 45px;
+        font-weight: 900;
+        color: red;
+      }
+    </style>
+</head>
+<body onLoad="disptime()">
+    <div class="year"><span id="year"></span></div>
+    <div id="clock" ></div>
+
+
+    <script>
+        let clock = document.getElementById('clock');
+        let yearid = document.getElementById('year');
+        function disptime() {
+            var time = new Date(); //获得当前时间
+            var year = time.getFullYear(); //获得年月日
+            var month = time.getMonth(); //获得年月日
+            var date = time.getDate(); //获得年月日
+            var hour = time.getHours(); //获得小时、分钟、秒
+            var minute = time.getMinutes();
+            var second = time.getSeconds();
+            if (hour < 10) //如果小时只有1位，补0显示
+              hour = "0" + hour;
+            if (minute < 10) //如果分钟只有1位，补0显示
+              minute = "0" + minute;
+            if (second < 10) //如果秒数只有1位，补0显示
+              second = "0" + second;
+            /*设置文本框的内容为当前时间*/
+            clock.innerHTML =  hour + ":" + minute + ":" + second;
+            yearid.innerHTML = (month +1)+'月' + date +'日';
+            /*设置定时器每隔1秒（1000毫秒），调用函数disptime()执行，刷新时钟显示*/
+            var myTime = setTimeout("disptime()", 1000);
+
+          }
+        // 获取小球的div
+        var div = document.querySelector('#clock');
+        
+         // 获取小球在桌面移动的最大距离
+        var width = document.documentElement.clientWidth || document.body.clientWidth;
+        var height = document.documentElement.clientHeight || document.body.clientHeight;
+        var newWidth = width  - div.offsetWidth;
+        var newHeight = height - div.offsetHeight;
+  
+        // 设置小球移动的步长
+        var step = [4,5,6,7,8,9,-4,-5,-6,-7,-8,-9];
+        var stepx = getStep();
+        var stepy = getStep();
+       
+        // 设置小球的大小
+
+        // 函数的调用实现移动
+        move(div,stepx,stepy,newWidth,newHeight);
+
+        // 实现小球的移动
+        function move(obj,stepx, stepy,width,height){
+            clearInterval(obj.timer)
+             // 用来判断是否超出屏幕以及每次小球的距离
+            var disx;  var disy ;
+            obj.timer = setInterval(function(){
+                disx = obj.offsetLeft + stepx;
+                disy = obj.offsetTop  + stepy;
+                if(disx >= width){   // 水平方向上判断是否超出右边屏幕
+                    disx  = width;
+                    stepx = -stepx;
+                    // obj.style.backgroundColor = getColor();
+                }
+                if(disx < 0){  // 水平方向上判断是否超出左边屏幕
+                    disx  = 0;
+                    stepx = -stepx;
+                    // obj.style.backgroundColor = getColor();
+                }
+                if(disy >= height){   // 垂直方向上判断是否超出下边屏幕
+                    disy  = height;
+                    stepy = -stepy;
+                    // obj.style.backgroundColor = getColor();
+                }
+                if(disy < 0){  // 垂直方向上判断是否超出上边屏幕
+                    disy  = 0;
+                    stepy = -stepy;
+                    // obj.style.backgroundColor = getColor();
+                }
+                obj.style.left = disx + 'px';
+                obj.style.top  = disy + 'px';
+            },80)
+        }
+        // 获取步长
+        function getStep(){
+            return step[Math.floor(Math.random() * step.length)];
+        }
+
+    </script>
+</body>
+</html>
