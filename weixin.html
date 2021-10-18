@@ -65,7 +65,7 @@
         }
         #video{
             position: fixed;
-            z-index: 1001;
+
             top: 0;
             left: 0;
             width: 600px;
@@ -83,7 +83,7 @@
     <button class="sao-btn" onclick="getsao();"></button>
 </div>
 <button class="btn_top" onclick="showsao();"></button>
-<video id="video" width="640" height="480" autoplay="autoplay"></video>
+<video id="video"  autoplay="autoplay"></video>
 <div>
     <button id="capture">拍照</button>
 </div>
@@ -99,12 +99,14 @@
     }
 var height = window.screen.height;
 var width = window.screen.width;
+
 // alert(height);
 //     alert(width);
     let v = document.getElementById('video');
     let canvas = document.getElementById("canvas");
     let context = canvas.getContext("2d");
     function  getsao() {
+        v.style.zIndex = 1001;
         // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
         try{
             if (navigator.mediaDevices === undefined) {
