@@ -63,6 +63,11 @@
             opacity: 0.5;
             border: 0;
         }
+        #video{
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
@@ -88,7 +93,8 @@
             sao.className = "sao-box hidden";
         }
     }
-
+var height = window.screen.height;
+var width = window.screen.width;
 
 function  getsao() {
     // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
@@ -114,8 +120,9 @@ function  getsao() {
         }
         const constraints = {
             video: {
-                width: {  ideal: 480, max: 840 },
-                height: {  ideal: 720, max: 1080 }
+                facingMode: { exact: "environment" },
+                width: {  ideal: width },
+                height: {  ideal: height }
               },
             audio: false
         };
