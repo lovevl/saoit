@@ -113,7 +113,10 @@ function  getsao() {
             }
         }
         const constraints = {
-            video: true,
+            video: {
+                width: {  ideal: 480, max: 840 },
+                height: {  ideal: 720, max: 1080 }
+              },
             audio: false
         };
         let promise = navigator.mediaDevices.getUserMedia(constraints);
