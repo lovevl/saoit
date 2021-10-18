@@ -68,7 +68,7 @@
             top: 0;
             left: 0;
             width: 600px;
-            height: 800px;
+            height: 480px;
         }
     </style>
 </head>
@@ -82,10 +82,11 @@
     <button class="sao-btn" onclick="getsao();"></button>
 </div>
 <button class="btn_top" onclick="showsao();"></button>
-<video id="video"></video>
-<div id="webcam"></div>
-<!--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
-<!--<script src="jquery.webcam.min.js"></script>-->
+<video id="video" width="640" height="480" autoplay="autoplay"></video>
+<div>
+    <button id="capture">拍照</button>
+</div>
+<canvas id="canvas" width="640" height="480"></canvas>
 <script>
     let sao = document.querySelector('.sao-box');
     function  showsao() {
@@ -97,58 +98,66 @@
     }
 var height = window.screen.height;
 var width = window.screen.width;
-alert(height);
-    alert(width);
-function  getsao() {
-    // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
-    try{
-        if (navigator.mediaDevices === undefined) {
-            navigator.mediaDevices = {};
-        }
-        if (navigator.mediaDevices.getUserMedia === undefined) {
-            navigator.mediaDevices.getUserMedia = function (constraints) {
-                // 首先，如果有getUserMedia的话，就获得它
-                var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+// alert(height);
+//     alert(width);
+    let v = document.getElementById('video');
+    let canvas = document.getElementById("canvas");
+    let context = canvas.getContext("2d");
+    function  getsao() {
+        // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
+        try{
+            if (navigator.mediaDevices === undefined) {
+                navigator.mediaDevices = {};
+            }
+            if (navigator.mediaDevices.getUserMedia === undefined) {
+                navigator.mediaDevices.getUserMedia = function (constraints) {
+                    // 首先，如果有getUserMedia的话，就获得它
+                    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-                // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
-                if (!getUserMedia) {
-                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                    // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
+                    if (!getUserMedia) {
+                        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                    }
+
+                    // 否则，为老的navigator.getUserMedia方法包裹一个Promise
+                    return new Promise(function (resolve, reject) {
+                        getUserMedia.call(navigator, constraints, resolve, reject);
+                    });
                 }
-
-                // 否则，为老的navigator.getUserMedia方法包裹一个Promise
-                return new Promise(function (resolve, reject) {
-                    getUserMedia.call(navigator, constraints, resolve, reject);
-                });
             }
-        }
-        const constraints = {
-            video: {
-                facingMode: "environment"
-                // width: {  ideal: width },
-                // height: {  ideal: height }
-              },
-            audio: false
-        };
-        let promise = navigator.mediaDevices.getUserMedia(constraints);
-        promise.then(stream => {
-            let v = document.getElementById('video');
-            // 旧的浏览器可能没有srcObject
-            if ("srcObject" in v) {
-                v.srcObject = stream;
-            } else {
-                // 防止再新的浏览器里使用它，应为它已经不再支持了
-                v.src = window.URL.createObjectURL(stream);
-            }
-            v.onloadedmetadata = function (e) {
-                v.play();
+            const constraints = {
+                video: {
+                    facingMode: "environment"
+                    // width: {  ideal: width },
+                    // height: {  ideal: height }
+                  },
+                audio: false
             };
-        }).catch(err => {
-            alert(err.name + ": " + err.message);
-        })
-    }catch (e) {
-        alert(e.message);
+            let promise = navigator.mediaDevices.getUserMedia(constraints);
+            promise.then(stream => {
+                // 旧的浏览器可能没有srcObject
+                if ("srcObject" in v) {
+                    v.srcObject = stream;
+                } else {
+                    // 防止再新的浏览器里使用它，应为它已经不再支持了
+                    v.src = window.URL.createObjectURL(stream);
+                }
+                v.onloadedmetadata = function (e) {
+                    v.play();
+                };
+            }).catch(err => {
+                alert(err.name + ": " + err.message);
+            })
+        }catch (e) {
+            alert(e.message);
+        }
     }
-}
+
+//注册拍照按钮的单击事件
+document.getElementById("capture").addEventListener("click", function () {
+    //绘制画面
+    context.drawImage(v, 0, 0, 640, 480);
+});
 
 </script>
 </body>
