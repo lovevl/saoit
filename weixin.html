@@ -68,6 +68,23 @@
             top: 0;
             left: 0;
         }
+        .cap-photo{
+            position: fixed;
+            bottom: 55px;
+            left: 45%;
+        }
+        .cap-photo button{
+            border: 0;
+            background-color: azure;
+            border-radius: 100%;
+            width: 100px;
+            height: 100px;
+        }
+        .back-black{
+            width:0;
+            height: 0;
+            background-color: #000000;
+        }
     </style>
 </head>
 <body>
@@ -81,10 +98,12 @@
 </div>
 <button class="btn_top" onclick="showsao();"></button>
 <video id="video"  autoplay="autoplay"></video>
-<div class="cap-photo">
+<div class="cap-photo" id="cap_box">
     <button id="capture">拍照</button>
 </div>
-<canvas id="canvas" width="640" height="480"></canvas>
+<div class="back-black" id="back_id">
+
+</div>
 <script>
     let sao = document.querySelector('.sao-box');
     function  showsao() {
@@ -100,13 +119,21 @@ var width = window.screen.width;
 // alert(height);
 //     alert(width);
     let v = document.getElementById('video');
-    let canvas = document.getElementById("canvas");
-    let context = canvas.getContext("2d");
+    let capbox = document.getElementById('cap_box');
     let cap = document.getElementById("capture");
+    let back = document.getElementById('back_id');
+
     function  getsao() {
+        back.style.width = width;
+        back.style.height = height;
+        back.style.zIndex = 1000;
         v.style.width = width;
         v.style.height = height;
         v.style.zIndex = 1001;
+        back.style.display = "block";
+        v.style.display = "block";
+        capbox.style.zIndex = 1002;
+        capbox.style.display = "block";
         // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
         try{
             if (navigator.mediaDevices === undefined) {
@@ -155,12 +182,13 @@ var width = window.screen.width;
             alert(e.message);
         }
     }
-
-    //注册拍照按钮的单击事件
     cap.addEventListener("click", function () {
-        //绘制画面
-        context.drawImage(v, 0, 0, 640, 480);
+        back.style.display = "none";
+        capbox.style.display = "none";
+        capbox.style.zIndex = 0;
+        v.style.display = "none";
     });
+
 
 </script>
 </body>
