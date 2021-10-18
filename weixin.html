@@ -35,7 +35,7 @@
             position: fixed;
             right: 0;
             top: 0;
-            opacity : 0.8;
+            opacity : 0;
             z-index: 1000;
             height: 48px;
             width: 53px;
@@ -60,7 +60,7 @@
             left: 0;
             height: 20%;
             width: 100%;
-            opacity: 0.5;
+            opacity: 0;
             border: 0;
         }
         #video{
@@ -69,6 +69,7 @@
             left: 0;
         }
         .cap-photo{
+            display: none;
             position: fixed;
             bottom: 55px;
             left: calc(50% - 50px);
@@ -95,7 +96,7 @@
 <img class="body1" src="body1.jpg" alt="">
 <img class="body2"  src="body2.jpg" alt="">
 <img class="footimg" src="foot.jpg" alt="">
-<div class="sao-box">
+<div class="sao-box hidden">
     <img class="saoimg" src="sao.png" alt="" >
     <button class="sao-btn" onclick="getsao();"></button>
 </div>
