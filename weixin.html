@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style></style>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            width: 100%;
+        }
+        .headimg{
+            position: fixed;
+            top:0;
+            z-index: 999;
+        }
+        .body1, .body2{
+            z-index: 1;
+        }
+        .body1{
+            margin-top:167px;
+        }
+        .footimg{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+        }
+        .btn_top{
+            position: fixed;
+            right: 0;
+            top: 0;
+            opacity : 0.8;
+            z-index: 1000;
+            height: 168px;
+            width: 183px;
+            border: 0;
+        }
+        .sao-box{
+            position: fixed;
+            right: 10px;
+            top:160px;
+            z-index: 999;
+            width: 40%;
+        }
+        .saoimg{
+            width: 100%;
+        }
+        .sao-box.hidden{
+            display: none;
+        }
+        .sao-box .sao-btn{
+            position: absolute;
+            top:40%;
+            left: 0;
+            height: 20%;
+            width: 100%;
+            opacity: 0;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<img class="headimg" src="head.jpg" alt="">
+<img class="body1" src="body1.jpg" alt="">
+<img class="body2"  src="body2.jpg" alt="">
+<img class="footimg" src="foot.jpg" alt="">
+<div class="sao-box">
+    <img class="saoimg" src="sao.png" alt="" >
+    <button class="sao-btn" onclick="getsao();"></button>
+</div>
+
+
+<button class="btn_top" onclick="showsao();"></button>
+<script>
+    let sao = document.querySelector('.sao-box');
+    function  showsao() {
+        if(sao.classList.contains("hidden") == true){
+            sao.className = "sao-box";
+        }else{
+            sao.className = "sao-box hidden";
+        }
+    }
+    function  getsao() {
+        var video = document.getElementById('video');
+
+        if (navigator.mediaDevices.getUserMedia) {
+            //最新的标准API
+            navigator.mediaDevices.getUserMedia({video : {width: 1000, height: 1000}}).then(success).catch(error);
+        } else if (navigator.webkitGetUserMedia) {
+            //webkit核心浏览器
+            navigator.webkitGetUserMedia({video : {width: 1000, height: 1000}},success, error)
+        } else if (navigator.mozGetUserMedia) {
+            //firfox浏览器
+            navigator.mozGetUserMedia({video : {width: 1000, height: 1000}}, success, error);
+        } else if (navigator.getUserMedia) {
+            //旧版API
+            navigator.getUserMedia({video : {width: 1000, height: 1000}}, success, error);
+        }
+
+        function success(stream) {
+            //兼容webkit核心浏览器
+            // let CompatibleURL = window.URL || window.webkitURL;
+
+            //将视频流设置为video元素的源
+            console.log(stream);
+
+            //video.src = CompatibleURL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function error(error) {
+            console.log(`访问用户媒体设备失败${error.name}, ${error.message}`);
+        }
+    }
+</script>
+</body>
+</html>

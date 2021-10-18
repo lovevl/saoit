@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            margin: 0;
+        }
+        div#container {
+            height:500px;
+            width:100%;
+            background: #C6CEF7;
+        }
+        #target {
+            position: absolute;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>前端达人示例展示——图片随机移动</title>
+</head>
+<body>
+<div id="container"></div>
+<script src="https://cdn.jsdelivr.net/web-animations/latest/web-animations.min.js"></script>
+<script>
+//https://blog.csdn.net/Ed7zgeE9X/article/details/98127111
+    function makeNewPosition() {
+        var containerVspace = container.offsetHeight - target.offsetHeight,
+            containerHspace = container.offsetWidth - target.offsetWidth,
+            newX = Math.floor(Math.random() * containerVspace),
+            newY = Math.floor(Math.random() * containerHspace);
+        return [newX, newY];
+    }
+    function velocity(prev, next) {
+        var x = Math.abs(prev[1] - next[1]),
+            y = Math.abs(prev[0] - next[0]),
+            larger = x > y ? x : y,
+            speedModifier = 0.2,
+            time = Math.ceil(larger / speedModifier);
+        return time;
+    }
+    function floatHead() {
+        var newPos = makeNewPosition(),
+            oldTop = target.offsetTop,
+            oldLeft = target.offsetLeft;
+        target.animate([
+            { top: oldTop+"px", left: oldLeft+"px" },
+            { top: newPos[0]+"px", left: newPos[1]+"px" }
+        ], {
+            duration: velocity([oldTop, oldLeft],newPos),
+            fill: 'forwards'
+        }).onfinish = function() {
+            floatHead();
+        }
+    }
+    var container = document.getElementById("container"),
+        target = document.createElement("img");
+    target.id = "target";
+    target.onload = function() {
+        floatHead();
+    }
+    target.src = "walk.gif";
+    target.width="200";
+    container.appendChild(target);
+</script>
+</body>
+</html>
