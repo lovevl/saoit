@@ -65,11 +65,8 @@
         }
         #video{
             position: fixed;
-
             top: 0;
             left: 0;
-            width: 600px;
-            height: 480px;
         }
     </style>
 </head>
@@ -84,7 +81,7 @@
 </div>
 <button class="btn_top" onclick="showsao();"></button>
 <video id="video"  autoplay="autoplay"></video>
-<div>
+<div class="cap-photo">
     <button id="capture">拍照</button>
 </div>
 <canvas id="canvas" width="640" height="480"></canvas>
@@ -105,7 +102,10 @@ var width = window.screen.width;
     let v = document.getElementById('video');
     let canvas = document.getElementById("canvas");
     let context = canvas.getContext("2d");
+    let cap = document.getElementById("capture");
     function  getsao() {
+        v.style.width = width;
+        v.style.height = height;
         v.style.zIndex = 1001;
         // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
         try{
@@ -130,9 +130,9 @@ var width = window.screen.width;
             }
             const constraints = {
                 video: {
-                    facingMode: "environment"
-                    // width: {  ideal: width },
-                    // height: {  ideal: height }
+                    facingMode: "environment",
+                    width: {  ideal: width },
+                    height: {  ideal: height }
                   },
                 audio: false
             };
@@ -156,11 +156,11 @@ var width = window.screen.width;
         }
     }
 
-//注册拍照按钮的单击事件
-document.getElementById("capture").addEventListener("click", function () {
-    //绘制画面
-    context.drawImage(v, 0, 0, 640, 480);
-});
+    //注册拍照按钮的单击事件
+    cap.addEventListener("click", function () {
+        //绘制画面
+        context.drawImage(v, 0, 0, 640, 480);
+    });
 
 </script>
 </body>
