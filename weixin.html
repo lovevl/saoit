@@ -89,15 +89,19 @@
             height: 0;
             background-color: #000000;
         }
+        .hidden{
+            display:none;
+        }
     </style>
 </head>
 <body>
-<img class="headimg" src="head.jpg" alt="">
-<img class="body1" src="body1.jpg" alt="">
-<img class="body2"  src="body2.jpg" alt="">
-<img class="footimg" src="foot.jpg" alt="">
+<img class="hidden" src="https://imge.top/fangyi/**jinjin.png" alt="">
+<img class="headimg" src="https://imge.top/fangyi/**head.jpg" alt="">
+<img class="body1" src="https://imge.top/fangyi/**body1.jpg" alt="">
+<img class="body2"  src="https://imge.top/fangyi/**body2.jpg" alt="">
+<img class="footimg" src="https://imge.top/fangyi/**foot.jpg" alt="">
 <div class="sao-box hidden">
-    <img class="saoimg" src="sao.png" alt="" >
+    <img class="saoimg" src="http://imge.top/fangyi/**sao.png" alt="" >
     <button class="sao-btn" onclick="getsao();"></button>
 </div>
 <button class="btn_top" onclick="showsao();"></button>
@@ -162,8 +166,8 @@ var width = window.screen.width;
             const constraints = {
                 video: {
                     facingMode: "environment",
-                    width: {  ideal: width },
-                    height: {  ideal: height }
+                    width: {  ideal: height },
+                    height: {  ideal: width }
                   },
                 audio: false
             };
